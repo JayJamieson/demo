@@ -1,0 +1,16 @@
+{
+  "name": "pdfer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^2.0.1",
+    "pdfjs-dist": "^2.10.377"
+  },
+  "dependencies": {
+    
+  },
+  "scripts": {
+    "start": "parcel index.html"
+  }
+}
