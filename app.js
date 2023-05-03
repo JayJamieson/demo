@@ -4,7 +4,9 @@ const pdfjsLib = require('pdfjs-dist');
 window.pdfjsLib = pdfjsLib;
 
 // embed pdf in js
-const pdfPath = new URL('fixed.pdf', import.meta.url);
+// you can change this to any pdf that is in the root of this directory
+// ccew.pdf for example will work too.
+const pdfPath = new URL('ccew.pdf', import.meta.url);
 
 // setting worker path to worker bundle.
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdf.worker.js', import.meta.url);
@@ -19,15 +21,15 @@ previewButton.addEventListener('click', async (event) => {
   // loads pdf from bytes retrieved from saveDocument()
   const loadingTask = pdfjsLib.getDocument(data);
   const pdfDocument = await loadingTask.promise;
-  
-  const pdfPage = await pdfDocument.getPage(1);  
+
+  const pdfPage = await pdfDocument.getPage(1);
 
   const viewport = pdfPage.getViewport({ scale: 1.5});
   const canvas = document.getElementById("preview");
-  
+
   canvas.width = viewport.width;
   canvas.height = viewport.height;
-  
+
   const ctx = canvas.getContext("2d");
 
   // render pdf with filled out form attributes
@@ -39,11 +41,13 @@ previewButton.addEventListener('click', async (event) => {
 });
 
 (async () => {
-  // Loading a document. and store in window for later reference 
+  // Loading a document. and store in window for later reference
   const loadingTask = pdfjsLib.getDocument(pdfPath);
   window.render = await loadingTask.promise;
-  
-  const pdfPage = await render.getPage(1);  
+
+  // for multi page PDF you will need to grab all available pages
+  // and call pdfPage.render for each and every page
+  const pdfPage = await render.getPage(1);
 
   const viewport = pdfPage.getViewport({ scale: 1.5});
   const vw = viewport.clone({ dontFlip: true });
@@ -51,9 +55,9 @@ previewButton.addEventListener('click', async (event) => {
 
   canvas.width = viewport.width;
   canvas.height = viewport.height;
-  
+
   const ctx = canvas.getContext("2d");
-  
+
   const parameters = {
     div: annotationLayer,
     page:pdfPage,
